@@ -1,5 +1,6 @@
 import unittest
 import memoization
+import time
 
 class MemoizeTest(unittest.TestCase):
 
@@ -63,9 +64,40 @@ class MemoizeTest(unittest.TestCase):
 		self.assertEqual(from_memoize, 33)
 		self.assertEqual(message, 'First Calculation', 
 			'Expected this to be first calculation')
+
 		from_memoize, message = memoization.memoize(self.add_func, 100, 200)
 		self.assertEqual(from_memoize, 300)
 		self.assertEqual(message, 'First Calculation', 'Expected this to be first calculation')
+
+		from_memoize, message = memoization.memoize(self.add_func, 11, 22)
+		self.assertEqual(from_memoize, 33)
+		self.assertEqual(message, 'First Calculation', 
+			'Expected this to be first calculation')
+
+	def test_single_function_timer_expired_same_arguments(self):
+		"""
+		Test Steps:
+			1) Call function (add_func) with values v1 and v2 with timeout 1 seconds. This should be calculated.
+			2) Sleep for 1 second
+			3) Call function (add_func) with values v1 and v2. Result should come from memoized result bank.
+			4) Sleep for 2 more seconds. Timer should now expire.
+			5) Call function (add_func) with values v1 and v2. Result should be re-calculated.
+		"""
+		from_memoize, message = memoization.memoize(self.add_func, 11, 22, timeout=4)
+		self.assertEqual(from_memoize, 33)
+		self.assertEqual(message, 'First Calculation', 
+			'Expected this to be first calculation')
+		time.sleep(1)
+
+		from_memoize, message = memoization.memoize(self.add_func, 11, 22)
+		self.assertEqual(from_memoize, 33)
+		self.assertEqual(message, 'Memoized', 'Expected this to come from memoized result bank')
+
+		time.sleep(4)
+		from_memoize, message = memoization.memoize(self.add_func, 11, 22)
+		self.assertEqual(message, 'First Calculation', 
+			'Expected this to be re calculated due to timer expiry')
+		
 
 
 if __name__ == '__main__':
