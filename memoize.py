@@ -9,9 +9,9 @@ def timer_expired(expiry_time):
     O/P: bool
     """
     if dt.datetime.today() > expiry_time:
-            return True
+        return True
     else:
-            return False
+        return False
 
 def calculate_expiry_time(timeout):
     """
@@ -46,6 +46,43 @@ def memoize_with_args(f):
     cache = dict()
     def resolver(*args):
         if args not in cache:
-                cache[args] = f(*args)
+            cache[args] = f(*args)
         return cache[args]
     return resolver
+
+def memoize_with_args_and_timer(f, expire_in=None):
+    """
+        Function: memoize_with_args
+        I/P: function
+        Resolver Input: *args
+        O/P: resolver function
+    """
+    cache = dict()
+
+    def resolver(*args):
+        if args in cache:
+
+            if expire_in:
+            	if 'expiry_{}'.format(args) not in cache:
+                    print 'Expiry time not in cache'
+                    expiry_time = calculate_expiry_time(expire_in)
+                    cache['expiry_{}'.format(args)] = expiry_time
+            	else:
+                    print 'Expiry in cache'
+
+                    #Get expiry time from cache
+                    expiry_time = cache['expiry_{}'.format(args)]
+
+                    # Check if timer expired.
+                    if timer_expired(expiry_time):
+                        print 'Timer expired'
+                        new_expiry_time = calculate_expiry_time(expire_in)
+                        cache['expiry_{}'.format(args)] = new_expiry_time
+                    else:
+                        print 'Timer Not expired yet'
+                        return cache[args]
+        cache[args] = f(*args)
+        return cache[args]
+    return resolver
+
+

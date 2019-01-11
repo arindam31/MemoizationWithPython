@@ -1,14 +1,23 @@
 import memoize
 import timeit
+import datetime
+import time
 
 """
 This python file contains few "expensive" functions in terms of time.
 """
+my_memoize_with_args_and_timer = lambda f: memoize.memoize_with_args_and_timer(f, 1)
 
-
+@memoize.memoize_with_args
 def add(*args):
-    print args
     return sum(args)
+
+@my_memoize_with_args_and_timer
+def multiply(*args):
+    prod = 1
+    for num in args:
+        prod *= num
+    return prod
 
 def fibonacci(num):
     if num <= 2:
@@ -22,18 +31,22 @@ def factorial(n):
     else:
         return n * factorial(n-1)
 
+
+
 memoize_fib = memoize.memoize(fibonacci)
 memoize_fact = memoize.memoize(factorial)
-memoize_add = memoize.memoize_with_args(add)
+
 
 if __name__ == '__main__':
-    # Without Memoization
+    # Without Memoization (Factorial and Fibinacci functions)
     # 1st SET
 
     print '---------------- First calculation 1st Set Direct function call ---------------------'
     print timeit.timeit('fibonacci(7)', setup='from __main__ import fibonacci', number=1)
     print timeit.timeit('factorial(5)', setup='from __main__ import factorial', number=1)
 
+
+    # Using memoization
     print '---------------- First calculation With Memoization 1st Set ---------------------'
     print timeit.timeit('memoize_fib(7)', setup='from __main__ import memoize_fib', number=1)
     print timeit.timeit('memoize_fact(5)', setup='from __main__ import memoize_fact', number=1)
@@ -71,15 +84,35 @@ if __name__ == '__main__':
     print memoize_fib.__closure__[0].cell_contents
 
     print '-------------- Add Function memoized ------'
-    print "Cache for add function:", memoize_add.__closure__[0].cell_contents
+    print "Cache for add function before calling it.:",add.__closure__[0].cell_contents
 
     print 'Memoize with multiple arguments example'
     # 1st set first call with memoize
-    print memoize_add(2,3)
-    print memoize_add(1,2,3,4,5)
-    print "Cache after 1st call:", memoize_add.__closure__[0].cell_contents
+    print add(2,3)
+    print add(1,2,3,4,5)
+    print "Cache after 1st call:", add.__closure__[0].cell_contents
 
     # 1st set second call with memoize
-    print memoize_add(2,3)
-    print memoize_add(1,2,3,4,5)
-    print "Cache after 2nd call:", memoize_add.__closure__[0].cell_contents
+    print add(2,3)
+    print add(1,2,3,4,5)
+    print "Cache after 2nd call:", add.__closure__[0].cell_contents
+
+    print '-------------- Multiply Function memoized with timer check ------'
+    print "Cache for multiply:", multiply.__closure__[0].cell_contents
+    print multiply(2,3,5)
+
+    print "Cache for multiply:", multiply.__closure__[0].cell_contents
+    print multiply(2,3,5)
+
+    print "Cache for multiply:", multiply.__closure__[0].cell_contents
+    print multiply(2,3,5)
+
+    print "Cache for multiply:", multiply.__closure__[0].cell_contents
+    print multiply(2,3,5)
+
+    print "Cache for multiply:", multiply.__closure__[0].cell_contents
+    time.sleep(1) # This is to expire timer.
+    print multiply(2,3,5)
+
+    # Should see new expiry time
+    print "Cache for multiply:", multiply.__closure__[0].cell_contents
