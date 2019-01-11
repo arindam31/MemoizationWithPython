@@ -29,7 +29,7 @@ memoize_add = memoize.memoize_with_args(add)
 if __name__ == '__main__':
     # Without Memoization
     # 1st SET
-    """
+
     print '---------------- First calculation 1st Set Direct function call ---------------------'
     print timeit.timeit('fibonacci(7)', setup='from __main__ import fibonacci', number=1)
     print timeit.timeit('factorial(5)', setup='from __main__ import factorial', number=1)
@@ -69,15 +69,17 @@ if __name__ == '__main__':
 
     print 'Fibo Cache'
     print memoize_fib.__closure__[0].cell_contents
-    """
+
+    print '-------------- Add Function memoized ------'
+    print "Cache for add function:", memoize_add.__closure__[0].cell_contents
 
     print 'Memoize with multiple arguments example'
     # 1st set first call with memoize
     print memoize_add(2,3)
     print memoize_add(1,2,3,4,5)
-    print "Cache:", memoize_add.__closure__[0].cell_contents
+    print "Cache after 1st call:", memoize_add.__closure__[0].cell_contents
 
     # 1st set second call with memoize
     print memoize_add(2,3)
     print memoize_add(1,2,3,4,5)
-    print "Cache:", memoize_add.__closure__[0].cell_contents
+    print "Cache after 2nd call:", memoize_add.__closure__[0].cell_contents
