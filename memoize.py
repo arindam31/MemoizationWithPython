@@ -1,13 +1,6 @@
 import datetime as dt
 import time
 
-"""
-Function: memoize
-I/P: function, args, timeout
-O/P: result of calculation
-"""
-memoize_dict = {}
-
 
 def timer_expired(expiry_time):
 	"""
@@ -31,9 +24,29 @@ def calculate_expiry_time(timeout):
 
 
 def memoize(f):
+	"""
+		Function: memoize
+		I/P: function
+		O/P: resolver function
+	"""
+
     cache = dict()
     def resolver(var):
         if var not in cache:
             cache[var] = f(var)
         return cache[var]
     return resolver
+
+def memoize_with_args(f):
+	"""
+		Function: memoize_with_args
+		I/P: function
+		Resolver Input: *args
+		O/P: resolver function
+	"""
+	cache = dict()
+	def resolver(*args):
+		if args not in cache:
+			cache[args] = f(*args)
+		return cache[args]
+	return resolver
