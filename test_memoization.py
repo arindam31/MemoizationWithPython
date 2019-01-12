@@ -2,7 +2,7 @@ import unittest
 import memoization
 import time
 
-class MemoizeTest(unittest.TestCase):
+class MemoizationTest(unittest.TestCase):
 
 	def setUp(self):
 		memoization.memoize_dict = {}

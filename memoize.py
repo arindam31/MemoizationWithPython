@@ -52,8 +52,8 @@ def memoize_with_args(f):
 
 def memoize_with_args_and_timer(f, expire_in=None):
     """
-        Function: memoize_with_args
-        I/P: function
+        Function: memoize_with_args_and_timer
+        I/P: function, expire_in 
         Resolver Input: *args
         O/P: resolver function
     """

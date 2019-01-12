@@ -1,11 +1,7 @@
 import datetime as dt
 import time
 
-"""
-Function: memoize
-I/P: function, args, timeout
-O/P: result of calculation
-"""
+
 memoize_dict = {}
 
 
@@ -31,6 +27,11 @@ def calculate_expiry_time(timeout):
 	
 
 def memoize(func, *args, **kwargs):
+	"""
+	Function: memoize
+	I/P: function, args, timeout
+	O/P: result of calculation
+	"""
 
 	#If timeout is provided, get that, or else, use default.
 	timeout = kwargs.pop('timeout', 5000)

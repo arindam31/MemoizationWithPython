@@ -41,38 +41,38 @@ if __name__ == '__main__':
     # Without Memoization (Factorial and Fibinacci functions)
     # 1st SET
 
-    print '---------------- First calculation 1st Set Direct function call ---------------------'
+    print '---------------- First calculation timing: 1st Set Direct function call ---------------------'
     print timeit.timeit('fibonacci(7)', setup='from __main__ import fibonacci', number=1)
     print timeit.timeit('factorial(5)', setup='from __main__ import factorial', number=1)
 
 
     # Using memoization
-    print '---------------- First calculation With Memoization 1st Set ---------------------'
-    print timeit.timeit('memoize_fib(7)', setup='from __main__ import memoize_fib', number=1)
+    print '---------------- First calculation timing: With Memoization 1st Set ---------------------'
+    print timeit.timeit('memoize_fib(20)', setup='from __main__ import memoize_fib', number=1)
     print timeit.timeit('memoize_fact(5)', setup='from __main__ import memoize_fact', number=1)
 
 
     # Below two statements should show almost same time as above.
     # 1st Set Repeat
-    print '----------------------1st Set Repeat-----------------------------'
-    print timeit.timeit('memoize_fib(7)', setup='from __main__ import memoize_fib', number=1)
+    print '----------------------1st Set Repeat timings-----------------------------'
+    print timeit.timeit('memoize_fib(20)', setup='from __main__ import memoize_fib', number=1)
     print timeit.timeit('memoize_fact(5)', setup='from __main__ import memoize_fact', number=1)
 
 
     # 2nd Set
-    print '-----------------First calculation 2nd Set-----------------------'
+    print '-----------------First calculation 2nd Set timings-----------------------'
     print timeit.timeit('memoize_fib(5)', setup='from __main__ import memoize_fib', number=1)
     print timeit.timeit('memoize_fact(8)', setup='from __main__ import memoize_fact', number=1)
 
     # This set calculation must begin to show improvement
     # 1st Set repeat
-    print '-------------------Recalculating 1st set--------------------------'
-    print timeit.timeit('memoize_fib(7)', setup='from __main__ import memoize_fib', number=1)
+    print '-------------------Timings : Recalculating 1st set--------------------------'
+    print timeit.timeit('memoize_fib(20)', setup='from __main__ import memoize_fib', number=1)
     print timeit.timeit('memoize_fact(5)', setup='from __main__ import memoize_fact', number=1)
 
     # This set calculation must begin to show improvement
     # 2nd Set repeat
-    print '-------------------Recalculating 2nd set--------------------------'
+    print '-------------------~Timings : Recalculating 2nd set--------------------------'
     print timeit.timeit('memoize_fib(5)', setup='from __main__ import memoize_fib', number=1)
     print timeit.timeit('memoize_fact(8)', setup='from __main__ import memoize_fact', number=1)
 
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     print multiply(2,3,5)
 
     print "Cache for multiply:", multiply.__closure__[0].cell_contents
-    time.sleep(1) # This is to expire timer.
+    time.sleep(2) # This is to expire timer.
     print multiply(2,3,5)
 
     # Should see new expiry time
