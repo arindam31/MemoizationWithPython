@@ -85,4 +85,38 @@ def memoize_with_args_and_timer(f, expire_in=None):
         return cache[args]
     return resolver
 
+class MemoizeTimer(object):
+    def __init__(self, expire_in=None):
+        self.cache = {}
+        self.expire_in = expire_in
+        
+
+    def __call__(self, fn, *args):
+        
+        def resolver(*args):
+            if args in self.cache:
+
+                if self.expire_in:
+                    if 'expiry_{}'.format(args) not in self.cache:
+                        print 'Expiry time not in cache'
+                        expiry_time = calculate_expiry_time(self.expire_in)
+                        self.cache['expiry_{}'.format(args)] = expiry_time
+                    else:
+                        print 'Expiry in cache'
+
+                        #Get expiry time from cache
+                        expiry_time = self.cache['expiry_{}'.format(args)]
+
+                        # Check if timer expired.
+                        if timer_expired(expiry_time):
+                            print 'Timer expired'
+                            new_expiry_time = calculate_expiry_time(expire_in)
+                            self.cache['expiry_{}'.format(args)] = new_expiry_time
+                        else:
+                            print 'Timer Not expired yet'
+                            return self.cache[args]
+            self.cache[args] = fn(*args)
+            return self.cache[args]
+        return resolver
+
 

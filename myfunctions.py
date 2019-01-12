@@ -19,6 +19,13 @@ def multiply(*args):
         prod *= num
     return prod
 
+@memoize.MemoizeTimer(2)
+def sum_of_square(*args):
+    _sum = 0
+    for num in args:
+        _sum += num ** 2
+    return _sum
+
 def fibonacci(num):
     if num <= 2:
         return 1
@@ -116,3 +123,19 @@ if __name__ == '__main__':
 
     # Should see new expiry time
     print "Cache for multiply:", multiply.__closure__[0].cell_contents
+
+    
+
+    print '-------------- Testing performance of Class based Memoization technique ------'
+    # Note: The decorator has been set to expire cache in 2 second
+    print '1st set call...Expected max time'
+    print sum_of_square(2,3,4)
+    print "Cache for multiply:", sum_of_square.__closure__[0].cell_contents
+
+    print '1st set Recalculating...'
+    print sum_of_square(2,3,4)
+    print "Cache for multiply:", sum_of_square.__closure__[0].cell_contents()
+
+
+
+
