@@ -129,12 +129,11 @@ if __name__ == '__main__':
     print '-------------- Testing performance of Class based Memoization technique ------'
     # Note: The decorator has been set to expire cache in 2 second
     print '1st set call...Expected max time'
-    print sum_of_square(2,3,4)
-    print "Cache for multiply:", sum_of_square.__closure__[0].cell_contents
-
-    print '1st set Recalculating...'
-    print sum_of_square(2,3,4)
-    print "Cache for multiply:", sum_of_square.__closure__[0].cell_contents()
+    print '1st call time:', timeit.timeit('sum_of_square(2,3,4)', 'from __main__ import sum_of_square', number=1)
+    print '2nd Call time:', timeit.timeit('sum_of_square(2,3,4)', 'from __main__ import sum_of_square', number=1)
+    print '3rd Call time:', timeit.timeit('sum_of_square(2,3,4)', 'from __main__ import sum_of_square', number=1)
+    time.sleep(2)
+    print '4th Call. Timer should have expired by now:', timeit.timeit('sum_of_square(2,3,4)', 'from __main__ import sum_of_square', number=1)
 
 
 

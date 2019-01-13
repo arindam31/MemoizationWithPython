@@ -110,7 +110,7 @@ class MemoizeTimer(object):
                         # Check if timer expired.
                         if timer_expired(expiry_time):
                             print 'Timer expired'
-                            new_expiry_time = calculate_expiry_time(expire_in)
+                            new_expiry_time = calculate_expiry_time(self.expire_in)
                             self.cache['expiry_{}'.format(args)] = new_expiry_time
                         else:
                             print 'Timer Not expired yet'
